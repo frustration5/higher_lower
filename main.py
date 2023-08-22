@@ -4,6 +4,9 @@ import random
 import time
 
 
+# TODO
+# 1. When progressing through the game the next comparison always uses the last compared to index
+
 # Global variable list of len of data for selecting from for random
 data_c = []
 data_c.extend(range(0, len(data)))
@@ -41,55 +44,84 @@ def comparing():
     """
     comp_dict = []
     comp_dict.append(grab())
-    i = 1 # Determines which index to use to compare to the correct answer of the previous question.
-    i2 = 0 # The index of which i is compared to.
-    while True: # Loop to continue to compare until you are wrong.
-        end = False
-        if end == True: # Break the while loop if there was a wrong answer.
+    first_item = 1  # Determines which index to use to compare to the correct answer of the previous question.
+    second_item = 0  # The index of which first_item is compared to.
+    end = False
+    while True:  # Loop to continue to compare until you are wrong.
+        lg_fol_cnt = []  # List of dictionaries of comp_dict with the largest follower count.
+        if end == True:  # Break the while loop if there was a wrong answer.
             break
         comp_dict.append(grab())
         print("Alright, who has a larger follower count?")
         print("")
-        print("Name: " + comp_dict[i2]['name'])
-        print("Follower Count: " + str(comp_dict[i2]['follower_count']) + ",000")
-        print("Description: " + comp_dict[i2]['description'])
-        print("Country: " + comp_dict[i2]['country'])
+        print("Name: " + comp_dict[second_item]['name'])
+        print("Follower Count: " + str(comp_dict[second_item]['follower_count']) + ",000")
+        print("Description: " + comp_dict[second_item]['description'])
+        print("Country: " + comp_dict[second_item]['country'])
         time.sleep(0.5)
         print(logo.vs)
         time.sleep(0.5)
         print("")
-        print("Name: " + comp_dict[i]['name'])
-        print("Follower Count: " + str(comp_dict[i]['follower_count']) + ",000")
-        print("Description: " + comp_dict[i]['description'])
-        print("Country: " + comp_dict[i]['country'])
+        print("Name: " + comp_dict[first_item]['name'])
+        print("Follower Count: " + str(comp_dict[first_item]['follower_count']) + ",000")
+        print("Description: " + comp_dict[first_item]['description'])
+        print("Country: " + comp_dict[first_item]['country'])
         print("")
 
-        player_guess = input("Does " + comp_dict[i2]['name'] +
-                             " have more followers than " + comp_dict[i]['name'] + "? (y/n) ").lower()
+        while len(lg_fol_cnt) < 1:  # Compares the dictionaries when the list lg_fol_count is larger than 1.
+            player_guess = input("Does " + comp_dict[second_item]['name'] +
+                                 " have more followers than " + comp_dict[first_item]['name'] + "? (y/n) ").lower()
 
-        while player_guess != 'y' or player_guess != 'n':
-            player_guess = input("Does " + comp_dict[i2]['name'] +
-                                 " have more followers than " + comp_dict[i]['name'] + "? (y/n) ").lower()
-
-
-            if player_guess == 'y': # If you guessed that the first item has greater followers than the second
-                if comp_dict[i2]['follower_count'] > comp_dict[i]['follower_count']: # If you are correct or not
+            if player_guess == 'y':  # If you guessed that the first item has greater followers than the second
+                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    i += 1
-                    i2 += 1
+                    lg_fol_cnt.append(comp_dict[second_item])
+                    first_item += 1
+                    second_item += 1
+                    break
                 else:
                     print("Wrong! You Lose!")
                     end = True
                     break
             elif player_guess == 'n':
-                if comp_dict[i]['follower_count'] > comp_dict[i2]['follower_count']: # If you are correct or not
+                if comp_dict[first_item]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    i += 1
-                    i2 += 1
+                    lg_fol_cnt.append(comp_dict[first_item])
+                    first_item += 1
+                    second_item += 1
+                    break
                 else:
                     print("Wrong! You Lose!")
                     end = True
                     break
+
+        while len(lg_fol_cnt) > 1:
+            player_guess = input("Does " + comp_dict[second_item]['name'] +
+                                 " have more followers than " + comp_dict[first_item]['name'] + "? (y/n) ").lower()
+
+            if player_guess == 'y':  # If you guessed that the first item has greater followers than the second
+                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
+                    print("Correct! Next comparison.")
+                    lg_fol_cnt.append(comp_dict[second_item])
+                    first_item += 1
+                    second_item += 1
+                    break
+                else:
+                    print("Wrong! You Lose!")
+                    end = True
+                    break
+            elif player_guess == 'n':
+                if comp_dict[first_item]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
+                    print("Correct! Next comparison.")
+                    lg_fol_cnt.append(comp_dict[first_item])
+                    first_item += 1
+                    second_item += 1
+                    break
+                else:
+                    print("Wrong! You Lose!")
+                    end = True
+                    break
+
 
 def to_begin():
     """
@@ -105,9 +137,3 @@ def to_begin():
         print("Cya!")
 
 to_begin()
-# You can minus a set from a set to remove ints
-# n = [9,2]
-# s = set(range(1,8))
-# a = list(s - set(n))
-# print(s)
-# print(a)
