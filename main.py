@@ -42,41 +42,59 @@ def comparing():
     Compares the return from game_start()
     :return:
     """
+    lg_fol_cnt = []
     comp_dict = []
     comp_dict.append(grab())
-    first_item = 1  # Determines which index to use to compare to the correct answer of the previous question.
-    second_item = 0  # The index of which first_item is compared to.
+    first_item = len(lg_fol_cnt)  # Determines which index to use to compare to the correct answer of the previous question.
+    second_item = 1  # The index of which first_item is compared to.
     end = False
     while True:  # Loop to continue to compare until you are wrong.
-        lg_fol_cnt = []  # List of dictionaries of comp_dict with the largest follower count.
         if end == True:  # Break the while loop if there was a wrong answer.
             break
         comp_dict.append(grab())
-        print("Alright, who has a larger follower count?")
-        print("")
-        print("Name: " + comp_dict[second_item]['name'])
-        print("Follower Count: " + str(comp_dict[second_item]['follower_count']) + ",000")
-        print("Description: " + comp_dict[second_item]['description'])
-        print("Country: " + comp_dict[second_item]['country'])
-        time.sleep(0.5)
-        print(logo.vs)
-        time.sleep(0.5)
-        print("")
-        print("Name: " + comp_dict[first_item]['name'])
-        print("Follower Count: " + str(comp_dict[first_item]['follower_count']) + ",000")
-        print("Description: " + comp_dict[first_item]['description'])
-        print("Country: " + comp_dict[first_item]['country'])
-        print("")
+        if len(lg_fol_cnt) >= 1:  # If the lg_fol_cnt is greater than one, meaning the larger follower count from the
+                                    # last question was appended to the list
+            print("Alright, who has a larger follower count?")
+            print("")
+            print("Name: " + lg_fol_cnt[-1]['name'])
+            #print("Follower Count: " + str(lg_fol_cnt[-1]['follower_count']) + ",000")
+            print("Description: " + lg_fol_cnt[-1]['description'])
+            print("Country: " + lg_fol_cnt[-1]['country'])
+            time.sleep(0.5)
+            print(logo.vs)
+            time.sleep(0.5)
+            print("")
+            print("Name: " + comp_dict[second_item]['name'])
+            #print("Follower Count: " + str(comp_dict[second_item]['follower_count']) + ",000")
+            print("Description: " + comp_dict[second_item]['description'])
+            print("Country: " + comp_dict[second_item]['country'])
+            print("")
+        else:
+            print("Alright, who has a larger follower count?")
+            print("")
+            print("Name: " + comp_dict[first_item]['name'])
+            #print("Follower Count: " + str(comp_dict[first_item]['follower_count']) + ",000")
+            print("Description: " + comp_dict[first_item]['description'])
+            print("Country: " + comp_dict[first_item]['country'])
+            time.sleep(0.5)
+            print(logo.vs)
+            time.sleep(0.5)
+            print("")
+            print("Name: " + comp_dict[second_item]['name'])
+            #print("Follower Count: " + str(comp_dict[second_item]['follower_count']) + ",000")
+            print("Description: " + comp_dict[second_item]['description'])
+            print("Country: " + comp_dict[second_item]['country'])
+            print("")
 
-        while len(lg_fol_cnt) < 1:  # Compares the dictionaries when the list lg_fol_count is larger than 1.
-            player_guess = input("Does " + comp_dict[second_item]['name'] +
-                                 " have more followers than " + comp_dict[first_item]['name'] + "? (y/n) ").lower()
+        while len(lg_fol_cnt) >= 1:
+            player_guess = input("Does " + lg_fol_cnt[-1]['name'] +
+                                 " have more followers than " + comp_dict[second_item]['name'] + "? (y/n) ").lower()
 
             if player_guess == 'y':  # If you guessed that the first item has greater followers than the second
-                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
+                if lg_fol_cnt[-1]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    lg_fol_cnt.append(comp_dict[second_item])
-                    first_item += 1
+                    lg_fol_cnt.append(comp_dict[first_item])
+                    #first_item += 1
                     second_item += 1
                     break
                 else:
@@ -84,10 +102,10 @@ def comparing():
                     end = True
                     break
             elif player_guess == 'n':
-                if comp_dict[first_item]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
+                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    lg_fol_cnt.append(comp_dict[first_item])
-                    first_item += 1
+                    lg_fol_cnt.append(comp_dict[second_item])
+                    #first_item += 1
                     second_item += 1
                     break
                 else:
@@ -95,15 +113,15 @@ def comparing():
                     end = True
                     break
 
-        while len(lg_fol_cnt) > 1:
-            player_guess = input("Does " + comp_dict[second_item]['name'] +
-                                 " have more followers than " + comp_dict[first_item]['name'] + "? (y/n) ").lower()
+        while len(lg_fol_cnt) == 0:  # Compares the dictionaries when the list lg_fol_count is larger than 1.
+            player_guess = input("Does " + comp_dict[first_item]['name'] +
+                                 " have more followers than " + comp_dict[second_item]['name'] + "? (y/n) ").lower()
 
             if player_guess == 'y':  # If you guessed that the first item has greater followers than the second
-                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
+                if comp_dict[first_item]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    lg_fol_cnt.append(comp_dict[second_item])
-                    first_item += 1
+                    lg_fol_cnt.append(comp_dict[first_item])
+                    #first_item += 1
                     second_item += 1
                     break
                 else:
@@ -111,17 +129,16 @@ def comparing():
                     end = True
                     break
             elif player_guess == 'n':
-                if comp_dict[first_item]['follower_count'] > comp_dict[second_item]['follower_count']:  # If you are correct or not
+                if comp_dict[second_item]['follower_count'] > comp_dict[first_item]['follower_count']:  # If you are correct or not
                     print("Correct! Next comparison.")
-                    lg_fol_cnt.append(comp_dict[first_item])
-                    first_item += 1
+                    lg_fol_cnt.append(comp_dict[second_item])
+                    #first_item += 1
                     second_item += 1
                     break
                 else:
                     print("Wrong! You Lose!")
                     end = True
                     break
-
 
 def to_begin():
     """
